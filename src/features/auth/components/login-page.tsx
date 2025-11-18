@@ -5,10 +5,10 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { Mail, Lock, Eye } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { LogoLink } from "@/components/logo-link";
 import { AuthLayout } from "./auth-layout";
+import { InputWithIcon } from "@/components/ui/input-with-icon";
 import { AuthSocialButton } from "./auth-social-button";
 import { loginSchema, type LoginInput } from "@/features/auth/schemas";
 import { clearAuthError, loginThunk } from "@/features/auth/auth-slice";
@@ -70,44 +70,33 @@ export function LoginPageContent() {
       <Card className="rounded-3xl border border-border/60 bg-card/95 py-8 shadow-xl shadow-background/40">
         <CardContent>
           <form className="space-y-6" onSubmit={handleSubmit} noValidate>
-            <div className="space-y-1.5 text-left text-sm font-medium">
-              <label htmlFor="usernameOrEmail">Tên đăng nhập hoặc email</label>
-              <div className="relative">
-                <Mail className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  id="usernameOrEmail"
-                  name="usernameOrEmail"
-                  type="text"
-                  placeholder="Nhập email hoặc tên đăng nhập"
-                  className="h-12 rounded-xl border-border bg-secondary/40 pl-11"
-                  value={formValues.usernameOrEmail}
-                  onChange={handleChange("usernameOrEmail")}
-                  autoComplete="username"
-                  aria-invalid={Boolean(fieldErrors.usernameOrEmail)}
-                />
-              </div>
-              {fieldErrors.usernameOrEmail ? (
-                <p className="text-xs font-medium text-destructive">
-                  {fieldErrors.usernameOrEmail}
-                </p>
-              ) : null}
-            </div>
+            <InputWithIcon
+              id="usernameOrEmail"
+              name="usernameOrEmail"
+              type="text"
+              label="Tên đăng nhập hoặc email"
+              placeholder="Nhập email hoặc tên đăng nhập"
+              icon={<Mail className="size-4" />}
+              value={formValues.usernameOrEmail}
+              onChange={handleChange("usernameOrEmail")}
+              autoComplete="username"
+              aria-invalid={Boolean(fieldErrors.usernameOrEmail)}
+              error={fieldErrors.usernameOrEmail}
+            />
 
-            <div className="space-y-1.5 text-left text-sm font-medium">
-              <label htmlFor="password">Mật khẩu</label>
-              <div className="relative">
-                <Lock className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Nhập mật khẩu"
-                  className="h-12 rounded-xl border-border bg-secondary/40 pl-11 pr-12"
-                  value={formValues.password}
-                  onChange={handleChange("password")}
-                  autoComplete="current-password"
-                  aria-invalid={Boolean(fieldErrors.password)}
-                />
+            <InputWithIcon
+              id="password"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              label="Mật khẩu"
+              placeholder="Nhập mật khẩu"
+              icon={<Lock className="size-4" />}
+              value={formValues.password}
+              onChange={handleChange("password")}
+              autoComplete="current-password"
+              aria-invalid={Boolean(fieldErrors.password)}
+              error={fieldErrors.password}
+              trailingAction={
                 <Button
                   type="button"
                   variant="ghost"
@@ -118,13 +107,8 @@ export function LoginPageContent() {
                 >
                   <Eye className="size-4" />
                 </Button>
-              </div>
-              {fieldErrors.password ? (
-                <p className="text-xs font-medium text-destructive">
-                  {fieldErrors.password}
-                </p>
-              ) : null}
-            </div>
+              }
+            />
 
             {error ? (
               <p className="text-center text-sm font-medium text-destructive" role="alert">

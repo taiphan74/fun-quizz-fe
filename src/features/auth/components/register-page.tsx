@@ -5,10 +5,10 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { User, Mail, Lock } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { LogoLink } from "@/components/logo-link";
 import { AuthLayout } from "./auth-layout";
+import { InputWithIcon } from "@/components/ui/input-with-icon";
 import { AuthSocialButton } from "./auth-social-button";
 import {
   registerSchema,
@@ -74,73 +74,46 @@ export function RegisterPageContent() {
       <Card className="rounded-3xl border border-border/60 bg-card/95 py-8 shadow-xl shadow-background/40">
         <CardContent>
           <form className="space-y-6" onSubmit={handleSubmit} noValidate>
-            <div className="space-y-1.5 text-left text-sm font-medium">
-              <label htmlFor="username">Tên người dùng</label>
-              <div className="relative">
-                <User className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  id="username"
-                  name="username"
-                  placeholder="Nhập tên người dùng"
-                  className="h-12 rounded-xl border-border bg-secondary/40 pl-11"
-                  value={formValues.username}
-                  onChange={handleChange("username")}
-                  autoComplete="username"
-                  aria-invalid={Boolean(fieldErrors.username)}
-                />
-              </div>
-              {fieldErrors.username ? (
-                <p className="text-xs font-medium text-destructive">
-                  {fieldErrors.username}
-                </p>
-              ) : null}
-            </div>
+            <InputWithIcon
+              id="username"
+              name="username"
+              placeholder="Nhập tên người dùng"
+              label="Tên người dùng"
+              icon={<User className="size-4" />}
+              value={formValues.username}
+              onChange={handleChange("username")}
+              autoComplete="username"
+              aria-invalid={Boolean(fieldErrors.username)}
+              error={fieldErrors.username}
+            />
 
-            <div className="space-y-1.5 text-left text-sm font-medium">
-              <label htmlFor="email">Địa chỉ email</label>
-              <div className="relative">
-                <Mail className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="Nhập email"
-                  className="h-12 rounded-xl border-border bg-secondary/40 pl-11"
-                  value={formValues.email}
-                  onChange={handleChange("email")}
-                  autoComplete="email"
-                  aria-invalid={Boolean(fieldErrors.email)}
-                />
-              </div>
-              {fieldErrors.email ? (
-                <p className="text-xs font-medium text-destructive">
-                  {fieldErrors.email}
-                </p>
-              ) : null}
-            </div>
+            <InputWithIcon
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Nhập email"
+              label="Địa chỉ email"
+              icon={<Mail className="size-4" />}
+              value={formValues.email}
+              onChange={handleChange("email")}
+              autoComplete="email"
+              aria-invalid={Boolean(fieldErrors.email)}
+              error={fieldErrors.email}
+            />
 
-            <div className="space-y-1.5 text-left text-sm font-medium">
-              <label htmlFor="password">Mật khẩu</label>
-              <div className="relative">
-                <Lock className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  placeholder="Tạo mật khẩu"
-                  className="h-12 rounded-xl border-border bg-secondary/40 pl-11"
-                  value={formValues.password}
-                  onChange={handleChange("password")}
-                  autoComplete="new-password"
-                  aria-invalid={Boolean(fieldErrors.password)}
-                />
-              </div>
-              {fieldErrors.password ? (
-                <p className="text-xs font-medium text-destructive">
-                  {fieldErrors.password}
-                </p>
-              ) : null}
-            </div>
+            <InputWithIcon
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Nhập mật khẩu"
+              label="Mật khẩu"
+              icon={<Lock className="size-4" />}
+              value={formValues.password}
+              onChange={handleChange("password")}
+              autoComplete="new-password"
+              aria-invalid={Boolean(fieldErrors.password)}
+              error={fieldErrors.password}
+            />
 
             {error ? (
               <p className="text-center text-sm font-medium text-destructive" role="alert">
