@@ -2,6 +2,7 @@ import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { api } from "@/lib/axios";
+import type { StandardResponse } from "@/lib/api-types";
 import type { LoginInput, RegisterInput } from "./schemas";
 
 type AuthUser = {
@@ -61,8 +62,18 @@ export const loginThunk = createAsyncThunk<AuthResponse, LoginInput, RejectValue
   "auth/login",
   async (credentials, { rejectWithValue }) => {
     try {
-      const { data } = await api.post<AuthResponse>("/auth/login", credentials);
-      return data;
+      const { data } = await api.post<StandardResponse<AuthResponse>>(
+        "/auth/login",
+        credentials
+      );
+
+      const payload = data.data as AuthResponse | null;
+
+      if (!payload) {
+        throw new Error("Đăng nhập thất bại.");
+      }
+
+      return payload;
     } catch (error) {
       return rejectWithValue(getErrorMessage(error));
     }
@@ -75,8 +86,18 @@ export const registerThunk = createAsyncThunk<
   RejectValue
 >("auth/register", async (payload, { rejectWithValue }) => {
   try {
-    const { data } = await api.post<AuthResponse>("/auth/register", payload);
-    return data;
+    const { data } = await api.post<StandardResponse<AuthResponse>>(
+      "/auth/register",
+      payload
+    );
+
+    const responsePayload = data.data as AuthResponse | null;
+
+    if (!responsePayload) {
+      throw new Error("Đăng ký thất bại.");
+    }
+
+    return responsePayload;
   } catch (error) {
     return rejectWithValue(getErrorMessage(error));
   }

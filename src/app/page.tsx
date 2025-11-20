@@ -1,8 +1,20 @@
+"use client";
+
+import { useEffect } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { SiteHeader } from "@/components/site-header";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { fetchUserProfileThunk } from "@/features/user/user-slice";
 
 export default function Home() {
+  const dispatch = useAppDispatch();
+  const { profile, loading, error } = useAppSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(fetchUserProfileThunk());
+  }, [dispatch]);
+
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-secondary text-foreground">
       <SiteHeader />
@@ -25,6 +37,19 @@ export default function Home() {
               placeholder="Tìm khóa học, quiz hoặc tài liệu bạn cần"
               className="h-16 rounded-full border-border bg-card pl-14 pr-6 text-base shadow-2xl shadow-primary/10"
             />
+          </div>
+
+          <div className="mt-6 text-sm text-muted-foreground">
+            {loading && <span>Đang tải thông tin người dùng...</span>}
+            {!loading && profile && (
+              <span>Xin chào, {profile.username} ({profile.email})</span>
+            )}
+            {!loading && !profile && !error && (
+              <span>Bạn chưa đăng nhập.</span>
+            )}
+            {!loading && error && (
+              <span>Lỗi tải thông tin người dùng: {error}</span>
+            )}
           </div>
         </div>
       </main>
